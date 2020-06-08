@@ -1,7 +1,7 @@
-from color import green, red, reset
+from colors import green, red, reset
 import threading, requests, random, string, sys, os; from time import sleep
 
-os.system('title [Lightshot Brute Forcer] - Scrape Screenshots')
+os.system('title [Lightshot Brute Forcer] - Scrape Screenshots ^| Loading...')
 if not os.path.exists('Images'): os.makedirs('Images')
 
 valid = 0
@@ -17,12 +17,6 @@ headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
 }
 
-def save(arg):
-    content = requests.get(arg).content
-    if 'image.prntscr' in arg: half_url = 'https://image.prntscr.com/image/'
-    elif 'i.imgur' in arg: half_url = 'https://i.imgur.com/'
-    with open('Images/' + arg.replace(half_url, '')[:6] + '.png', 'wb') as f: f.write(content)
-
 def grab_proxies():
     while True:
         all_proxies = requests.get('https://api.proxyscrape.com/?request=getproxies&proxytype=http&timeout=5000&country=all&ssl=all&anonymity=all').text
@@ -37,6 +31,13 @@ def cpm():
     sleep(1)
     new = valid + invalid
     return ((new - old) * 60)
+
+
+def save(arg):
+    content = requests.get(arg).content
+    if 'image.prntscr' in arg: half_url = 'https://image.prntscr.com/image/'
+    elif 'i.imgur' in arg: half_url = 'https://i.imgur.com/'
+    with open('Images/' + arg.replace(half_url, '')[:6] + '.png', 'wb') as f: f.write(content)
 
 def main(proxy):
     global valid
